@@ -1,16 +1,31 @@
-# medinow
+# MediNow
 
-A new Flutter project.
+Aplicativo mobile de lembretes de medicamentos desenvolvido em Flutter.
 
-## Getting Started
+## Funcionalidades
 
-This project is a starting point for a Flutter application.
+- Cadastro e login de usuários
+- Cadastro de medicamentos com nome, dosagem, cor, frequência e período
+- Suporte a medicamentos contínuos (sem data de fim)
+- Notificações locais nos horários agendados
+- Confirmação de tomada ou pulo do medicamento
+- Histórico de registros por medicamento
+- Edição e remoção de medicamentos
 
-A few resources to get you started if this is your first Flutter project:
+## Tecnologias
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- Flutter
+- SharedPreferences (armazenamento local)
+- flutter_local_notifications (notificações agendadas)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Como rodar
+
+```bash
+flutter pub get
+flutter run
+```
+
+## Plataformas suportadas
+
+- Android
+- iOS
