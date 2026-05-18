@@ -181,7 +181,7 @@ class _CadastroScreenState extends State<CadastroScreen> {
                 ),
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  initialValue: _sexo,
+                  value: _sexo,
                   decoration: const InputDecoration(
                     labelText: 'Sexo',
                     prefixIcon: Icon(Icons.wc),

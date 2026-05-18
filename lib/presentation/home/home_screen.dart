@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../../core/constants/colors.dart';
+import '../../data/local/prefs_service.dart';
 import '../../data/models/medicamento_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/repositories/medicamento_repository.dart';
@@ -12,7 +13,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
   String? _userId;
   String? _nomeUsuario;
   List<MedicamentoModel> _medicamentos = [];
@@ -22,7 +23,28 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _carregarDados();
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _verificarNotificacaoPendente();
+    }
+  }
+
+  Future<void> _verificarNotificacaoPendente() async {
+    final payload = await PrefsService.instance.consumirNotificacaoPendente();
+    if (payload != null && mounted) {
+      Navigator.pushNamed(context, '/notification-action', arguments: payload);
+    }
   }
 
   Future<void> _carregarDados() async {

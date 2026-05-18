@@ -8,21 +8,17 @@ import 'data/local/prefs_service.dart';
 
 @pragma('vm:entry-point')
 void notificationTapBackground(NotificationResponse response) async {
+  WidgetsFlutterBinding.ensureInitialized();
   if (response.payload != null) {
     await PrefsService.instance.salvarNotificacaoPendente(response.payload!);
   }
 }
 
 Future<void> main() async {
-  final t0 = DateTime.now();
-  debugPrint('[INIT] main() started at ${t0.toIso8601String()}');
-
   WidgetsFlutterBinding.ensureInitialized();
-  debugPrint('[INIT] ensureInitialized: ${DateTime.now().difference(t0).inMilliseconds}ms');
 
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('America/Sao_Paulo'));
-  debugPrint('[INIT] timezones: ${DateTime.now().difference(t0).inMilliseconds}ms');
 
   await NotificationService.init(
     onForegroundTap: (response) {
@@ -35,8 +31,14 @@ Future<void> main() async {
     },
     onBackgroundTap: notificationTapBackground,
   );
-  debugPrint('[INIT] NotificationService.init: ${DateTime.now().difference(t0).inMilliseconds}ms');
+
+  final launchDetails = await NotificationService.obterDetalhesLancamento();
+  if (launchDetails?.didNotificationLaunchApp == true) {
+    final payload = launchDetails?.notificationResponse?.payload;
+    if (payload != null) {
+      await PrefsService.instance.salvarNotificacaoPendente(payload);
+    }
+  }
 
   runApp(const MediNowApp());
-  debugPrint('[INIT] runApp: ${DateTime.now().difference(t0).inMilliseconds}ms');
 }

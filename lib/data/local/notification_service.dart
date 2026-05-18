@@ -34,9 +34,20 @@ class NotificationService {
       onDidReceiveBackgroundNotificationResponse: onBackgroundTap,
     );
 
-    await _plugin!
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+    final androidImpl = _plugin!
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>();
+
+    await androidImpl?.requestNotificationsPermission();
+
+    final canSchedule = await androidImpl?.canScheduleExactNotifications();
+    if (canSchedule == false) {
+      await androidImpl?.requestExactAlarmsPermission();
+    }
+  }
+
+  static Future<NotificationAppLaunchDetails?> obterDetalhesLancamento() async {
+    return _plugin?.getNotificationAppLaunchDetails();
   }
 
   static void _handleTap(NotificationResponse response) {

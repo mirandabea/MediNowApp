@@ -436,7 +436,7 @@ class _CadastroMedicamentoScreenState
               const SizedBox(height: 24),
 
               DropdownButtonFormField<int>(
-                initialValue: _frequenciaCustom ? -1 : _frequenciaHoras,
+                value: _frequenciaCustom ? -1 : _frequenciaHoras,
                 decoration: const InputDecoration(
                   labelText: 'Frequência',
                   prefixIcon: Icon(Icons.repeat),
